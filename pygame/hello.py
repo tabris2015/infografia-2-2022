@@ -15,10 +15,11 @@ while running:
             running = False
 
     # rellenar el fondo de color blanco
-    screen.fill((255, 255, 255))
+    #           ( R ,  G ,  B )
+    screen.fill((0, 255, 255))
 
     # dibujar un circulo en el centro de la pantalla
-    pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+    pygame.draw.circle(screen, (255, 0, 255), (350, 250), 95)
 
     # actualizar la pantalla
     pygame.display.flip()
