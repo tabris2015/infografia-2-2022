@@ -5,8 +5,8 @@ from pygame.sprite import Sprite
 from bresenham import get_line
 
 # constantes y configuraciones
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
 PIXEL_SIZE = 10
 
 def draw_points(screen, points, color=(0, 255, 0)):
@@ -27,7 +27,7 @@ def draw_line(screen, x0, y0, x1, y1, color=(255, 0, 0)):
     pygame.draw.line(
         screen, 
         color, 
-        (x0, y0), 
+        (x0 * PIXEL_SIZE, y0 * PIXEL_SIZE),
         (x1 * PIXEL_SIZE, y1 * PIXEL_SIZE),
         3
     )
@@ -45,8 +45,8 @@ is_running = True
 
 # points = [(0,0), (1,1), (2,2)]
 
-x0, y0 = 0, 0
-x1, y1 = 45, 18
+x0, y0 = 5, 20
+x1, y1 = 30, 5
 
 while is_running:
     for event in pygame.event.get():
@@ -56,10 +56,11 @@ while is_running:
         #     if event.key == K_UP:
     
     screen.fill((0, 0, 0))
-    draw_grid(screen)
+    draw_grid(screen, (0, 60, 60))
 
     points = get_line(x0, y0, x1, y1)
 
+    draw_points(screen, get_line(0,0,20,30))
     draw_points(screen, points)
     
     draw_line(screen, x0, y0, x1, y1)
