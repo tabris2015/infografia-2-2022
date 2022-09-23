@@ -1,5 +1,8 @@
 # inicializacion
 import pygame
+import random
+import math
+import cmath
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
 # constantes y configuraciones
@@ -7,11 +10,25 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 
 def draw_shapes(screen):
-    pygame.draw.rect(
-        screen,
-        (100, 100, 100),
-        (40, 40, 100, 100)
+
+    pygame.draw.circle(
+        screen, 
+        (200, 200, 200), 
+        (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),
+        100
     )
+    for angle in range(0, 360, 2):
+        r = (angle % 60) * 3
+        phi = math.radians(angle)
+        center_c = cmath.rect(r, phi)
+        pygame.draw.circle(
+            screen,
+            (0, 255 - angle // 4, angle // 4),
+            (center_c.real + SCREEN_WIDTH / 2, center_c.imag + SCREEN_HEIGHT / 2),
+            5
+        )
+        pygame.draw.line(screen, (255, 255, 0), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (center_c.real + SCREEN_WIDTH / 2, center_c.imag + SCREEN_HEIGHT / 2))
+
 
 pygame.init()
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
