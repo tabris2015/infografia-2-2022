@@ -9,7 +9,7 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 
-def draw_shapes(screen):
+def draw_shapes(screen, final_angle=360):
 
     pygame.draw.circle(
         screen, 
@@ -17,7 +17,7 @@ def draw_shapes(screen):
         (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),
         100
     )
-    for angle in range(0, 360, 2):
+    for angle in range(0, final_angle, 2):
         r = (angle % 60) * 3
         phi = math.radians(angle)
         center_c = cmath.rect(r, phi)
@@ -34,16 +34,21 @@ pygame.init()
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 is_running = True
 
+final_angle = 60
+
 while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
-        # if event.type == pygame.locals.KEYDOWN:
-        #     if event.key == K_UP:
+        if event.type == pygame.locals.KEYDOWN:
+            if event.key == K_UP:
+                final_angle += 10
+            if event.key == K_DOWN:
+                final_angle -= 10
     
     screen.fill((0, 0, 0))
 
-    draw_shapes(screen)
+    draw_shapes(screen, final_angle)
 
     #actualizar pantalla
     pygame.display.flip()
