@@ -42,11 +42,14 @@ class App:
                     self.is_running = False
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
-                        self.polygons[0].translate(100, 100)
+                        pass
+                        # self.polygons[0].translate(100, 100)
                     if event.key == K_UP:
-                        self.polygons[0].translate(-100, -100)
+                        pass
+                        # self.polygons[0].translate(-100, -100)
                     if event.key == K_LEFT:
-                        self.polygons[0].rotate(radians(20))
+                        pass
+                        # self.polygons[0].rotate(radians(20))
                     
 
             self.update()
@@ -55,12 +58,21 @@ class App:
 
 if __name__ == "__main__":
     app = App(SCREEN_WIDTH, SCREEN_HEIGHT)
-    app.add_polygon([
-            (5, 5), 
-            # (70, 5),
-            # (95, 45), 
-            (180, 45), 
-            (5, 80)
-    ])
+    # definir poligono
+    poly1 = [(5, 5),(250, 5), (250, 250), (5, 250)]
+    # definir matriz de transformacion
+    M_t = np.array([[1, 0, 40], [0, 1, 60], [0, 0, 1]])
+    # transformar poligono a forma matricial (coordenadas homogeneas)
+    poly1_l = [[p[0], p[1], 1] for p in poly1]
+    poly1_m = np.transpose(np.array(poly1_l))
+    # transformar vertices
+    poly2_m = np.dot(M_t, poly1_m)
+
+    print(poly2_m)
+    # convertir poligono transformado a lista de tuplas
+    poly2 = [(p[0], p[1]) for p in np.transpose(poly2_m)]
+    print(poly2)
+    app.add_polygon(poly1)
+    app.add_polygon(poly2)
     
     app.run()
