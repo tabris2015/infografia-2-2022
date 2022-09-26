@@ -59,14 +59,19 @@ class App:
 if __name__ == "__main__":
     app = App(SCREEN_WIDTH, SCREEN_HEIGHT)
     # definir poligono
-    poly1 = [(5, 5),(250, 5), (250, 250), (5, 250)]
+    poly1 = [(5, 5), (250, 250), (5, 250)]
     # definir matriz de transformacion
-    M_t = np.array([[1, 0, 40], [0, 1, 60], [0, 0, 1]])
+
+    M_t1 = np.array([[1, 0, 70], [0, 1, 70], [0, 0, 1]])
+    M_t2 = np.array([[-1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    M_t3 = np.array([[1, 0, -70], [0, 1, -70], [0, 0, 1]])
+    # np.sin(), np.cos()
     # transformar poligono a forma matricial (coordenadas homogeneas)
     poly1_l = [[p[0], p[1], 1] for p in poly1]
     poly1_m = np.transpose(np.array(poly1_l))
     # transformar vertices
-    poly2_m = np.dot(M_t, poly1_m)
+    M_t_final = np.dot(np.dot(M_t1, M_t2), M_t3)
+    poly2_m = np.dot(M_t_final, poly1_m)
 
     print(poly2_m)
     # convertir poligono transformado a lista de tuplas
