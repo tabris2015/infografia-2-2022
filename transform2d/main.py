@@ -3,7 +3,7 @@ from turtle import mainloop
 import numpy as np
 from math import radians
 import pygame 
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, KEYDOWN
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, KEYDOWN, K_a, K_d
 from polygon import Polygon
 
 # configuraciones
@@ -32,25 +32,34 @@ class App:
         self.polygons.append(polygon)
 
     def run(self):
+        vx, vy = 2,1
+        d_scale = 1.01
+        v_theta = radians(0.5)
         self.is_running = True
 
         while self.is_running:
+            pygame.time.delay(10)       # frame rate constante
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
-                if event.type == KEYDOWN:
-                    if event.key == K_DOWN:
-                        self.polygons[0].translate(0, 10)
-                    if event.key == K_UP:
-                        self.polygons[0].translate(0, -10)
-                    if event.key == K_LEFT:
-                        self.polygons[0].translate(-10, 0)
-                    if event.key == K_RIGHT:
-                        self.polygons[0].translate(10, 0)
-                        
-                    
-
+              
             self.update()
+            if self.polygons[0].rect[1] > SCREEN_HEIGHT or self.polygons[0].rect[1] < 0:
+                vy = -vy
+            if self.polygons[0].rect[0] > SCREEN_WIDTH or self.polygons[0].rect[0] < 0:
+                vx = -vx
+            
+
+            self.polygons[0].translate(vx, vy)  
+            poly_rect = self.polygons[0].rect
+            # self.polygons[0].rotate(v_theta, poly_rect[0] + poly_rect[2] // 2, poly_rect[1] + poly_rect[3] // 2)      
+            if poly_rect[3] > 100:
+                d_scale = 0.99
+            if poly_rect[3] < 10:
+                d_scale = 1.01
+            
+            self.polygons[0].scale(d_scale, d_scale)
+
         pygame.quit()
 
 
@@ -60,9 +69,8 @@ if __name__ == "__main__":
         [
             (5, 5), 
             (70, 5),
-            (95, 45), 
-            (180, 80), 
-            (25, 70)
+            (70, 70), 
+            (5, 70)
         ]
     ))
     

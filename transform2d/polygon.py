@@ -26,7 +26,31 @@ class Polygon:
         self.transform(translate_matrix)
 
     def rotate(self, theta, xr=None, yr=None):
-        pass
+        if xr is None and yr is None:
+            xr, yr = self.vertices[0]
+        
+        translate1_m = np.array([[1, 0, xr], [0, 1, yr], [0, 0, 1]])
+        rotate_m = np.array([[np.cos(theta), -np.sin(theta), 0],
+                            [np.sin(theta), np.cos(theta), 0],
+                            [0, 0, 1]])
+        # print(rotate_m)
+        translate2_m = np.array([[1, 0, -xr], [0, 1, -yr], [0, 0, 1]])
 
-    def scale(self, sx, sy):
-        pass
+        trans_matrix = np.dot(np.dot(translate1_m, rotate_m), translate2_m)
+        # print(trans_matrix)
+        self.transform(trans_matrix)
+        
+
+    def scale(self, sx, sy, xr=None, yr=None):
+        if xr is None and yr is None:
+            xr, yr = self.vertices[0]
+        translate1_m = np.array([[1, 0, xr], [0, 1, yr], [0, 0, 1]])
+        scale_m = np.array([[sx, 0, 0],
+                            [0, sy, 0],
+                            [0, 0, 1]])
+        # print(scale_m)
+        translate2_m = np.array([[1, 0, -xr], [0, 1, -yr], [0, 0, 1]])
+
+        trans_matrix = np.dot(np.dot(translate1_m, scale_m), translate2_m)
+        # print(trans_matrix)
+        self.transform(trans_matrix)
