@@ -1,3 +1,4 @@
+from fnmatch import translate
 import numpy as np
 import pygame
 from pygame.sprite import Sprite
@@ -21,7 +22,11 @@ class Polygon:
         self.vertices = new_vertices
 
     def translate(self, tx, ty):
-        pass
+        translate_matrix = np.array([[1, 0, tx], [0, 1, ty], [0, 0, 1]])
+        self.transform(translate_matrix)
 
     def rotate(self, theta, xr=None, yr=None):
+        pass
+
+    def scale(self, sx, sy):
         pass

@@ -40,11 +40,14 @@ class App:
                     self.is_running = False
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
-                        self.polygons[0].translate(100, 100)
+                        self.polygons[0].translate(0, 10)
                     if event.key == K_UP:
-                        self.polygons[0].translate(-100, -100)
+                        self.polygons[0].translate(0, -10)
                     if event.key == K_LEFT:
-                        self.polygons[0].rotate(radians(20))
+                        self.polygons[0].translate(-10, 0)
+                    if event.key == K_RIGHT:
+                        self.polygons[0].translate(10, 0)
+                        
                     
 
             self.update()
@@ -59,7 +62,7 @@ if __name__ == "__main__":
             (70, 5),
             (95, 45), 
             (180, 80), 
-            (5, 80)
+            (25, 70)
         ]
     ))
     
