@@ -1,9 +1,10 @@
 import pygame 
-from actor import Player
+import random
+from actor import Player, Enemy
 
 # configuraciones
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
 
 
 class App:
@@ -50,13 +51,13 @@ class App:
 
     def run(self):
         self.is_running = True
-        # pygame.time.set_timer(self.ADD_ENEMY_EVENT, 250)
+        pygame.time.set_timer(self.ADD_ENEMY_EVENT, 250)
         while self.is_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
-                # elif event.type == self.ADD_ENEMY_EVENT:
-                #     self.add_enemy(Enemy(max_x=SCREEN_WIDTH, max_y=SCREEN_HEIGHT))
+                elif event.type == self.ADD_ENEMY_EVENT:
+                    self.add_enemy(Enemy())
 
             keys = pygame.key.get_pressed()
             self.update(keys)
