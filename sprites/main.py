@@ -1,4 +1,6 @@
+from numpy import place
 import pygame 
+from pygame.locals import K_SPACE
 import random
 from actor import Player, Enemy
 
@@ -20,6 +22,7 @@ class App:
         # self.enemies es para detectar colisiones
         self.enemies = pygame.sprite.Group()
         self.ADD_ENEMY_EVENT = pygame.USEREVENT + 1
+        self.SHOOT_EVENT = pygame.USEREVENT + 2
         self.player: Player = None
         self.clock = pygame.time.Clock()
 
@@ -40,11 +43,22 @@ class App:
         # dibujar todos los sprites
         for sprite in self.sprites:
             self.screen.blit(sprite.surf, sprite.rect)
+        # dibujar proyectiles
+        for projectile in self.player.projectiles:
+            self.screen.blit(projectile.surf, projectile.rect)
+            
         # detectar colisiones entre el player y enemies
         if pygame.sprite.spritecollideany(self.player, self.enemies):
             self.player.kill()
             self.is_running = False
         
+        # detectar colisiones entre proyectiles y enemies
+        pygame.sprite.groupcollide(
+            self.player.projectiles,    # primer sprite group
+            self.enemies,               # segundo sprite group
+            True,                       # True = invocar kill() si sprites del grupo 1 colisionan
+            True                        # igual que arriba pero para el 2do grupo
+            )
         pygame.display.flip()
         # para mantener 30 frames por segundo
         self.clock.tick(30)
@@ -56,6 +70,9 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == K_SPACE:
+                        self.player.shoot()
                 elif event.type == self.ADD_ENEMY_EVENT:
                     self.add_enemy(Enemy())
 
