@@ -14,8 +14,8 @@ WHITE = (255, 255, 255)
 
 delta_t = 0.1
 m = 1
-k = 0.5 #Spring Constant
-c = 0.1 # 1.5 #Damper Constant
+k = 0.9 #Spring Constant
+c = 0.05 # 1.5 #Damper Constant
 
 x = 0
 y = 250
