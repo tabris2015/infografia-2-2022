@@ -15,10 +15,14 @@ class App:
         self.height = h
         self.bg_color = (0, 0, 0)
         pygame.init()
+        pygame.font.init()
+        font=pygame.font.get_default_font()              
+        self.fontsys=pygame.font.SysFont(font, 30)           
+        self.text_1 = self.fontsys.render("Score: ", 2, (0,50,0)) 
         self.screen = pygame.display.set_mode((w, h))
-        self.bg_img = pygame.image.load("assets/img/background3.png").convert_alpha()
-        self.sling_image = pygame.image.load("assets/img/sling-3.png").convert_alpha()
-        self.redbird = pygame.image.load("assets/img/red-bird3.png").convert_alpha()
+        self.bg_img = pygame.image.load("angry_birds/assets/img/background3.png").convert_alpha()
+        self.sling_image = pygame.image.load("angry_birds/assets/img/sling-3.png").convert_alpha()
+        self.redbird = pygame.image.load("angry_birds/assets/img/red-bird3.png").convert_alpha()
         self.is_running = False
         self.clock = pygame.time.Clock()
         self.fps = 50
@@ -33,21 +37,23 @@ class App:
         self.x_sling2, self.y_sling2 = 160, 450
         self.rope_length = 90
         self.score = 0
+        self.text_score = self.fontsys.render(str(self.score), 2, (0, 255, 0))
         self.beams = []
         self.columns = []
         self.birds = []
+        # capas: (capa1, capa2) ---     (a, b)
         self.space.add_collision_handler(0, 2).post_solve = self.col_bird_wood
         self.init_floor()
         self.draw_options = DrawOptions(self.screen)
         self.beams = [
-            Rectangle((980, 500), "assets/img/beam.png", self.space),
-            Rectangle((980, 300), "assets/img/beam.png", self.space),
+            Rectangle((980, 500), "angry_birds/assets/img/beam.png", self.space),
+            Rectangle((980, 300), "angry_birds/assets/img/beam.png", self.space),
         ]
         self.columns = [
-            Rectangle((950, 550), "assets/img/column.png", self.space),
-            Rectangle((1010, 550), "assets/img/column.png", self.space),
-            Rectangle((950, 350), "assets/img/column.png", self.space),
-            Rectangle((1010, 350), "assets/img/column.png", self.space),
+            Rectangle((950, 550), "angry_birds/assets/img/column.png", self.space),
+            Rectangle((1010, 550), "angry_birds/assets/img/column.png", self.space),
+            Rectangle((950, 350), "angry_birds/assets/img/column.png", self.space),
+            Rectangle((1010, 350), "angry_birds/assets/img/column.png", self.space),
         ]
         # self.barra = Rectangle((800, 550), "assets/img/column.png", self.space)
 
@@ -93,9 +99,15 @@ class App:
             space.remove(b, b.body)
             self.score += 100
 
+    def draw_score(self):
+        self.screen.blit(self.text_1, (10, 10))
+        self.text_score = self.fontsys.render(str(self.score), 2, (0, 50, 0))
+        self.screen.blit(self.text_score, (100, 10))
+
     def draw(self):
         self.screen.fill((130, 200, 100))
         self.screen.blit(self.bg_img, (0, -50))
+        self.draw_score()
 
         # self.barra.draw()
         # resortera parte atras
@@ -176,6 +188,7 @@ class App:
                 if event.type == pygame.QUIT:
                     self.is_running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    # rectangulo cercano al sling
                     rect = pygame.Rect(100, 370, 150, 180)
                     if rect.collidepoint(event.pos):
                         print(f"self.mouse_pressed at: ({event.pos})")

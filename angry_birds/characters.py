@@ -17,11 +17,12 @@ class Bird:
         shape = pymunk.Circle(body, radius, (0, 0))
         shape.elasticity = 0.8
         shape.friction = 1
+        # capa para detectar colisiones
         shape.collision_type = 0
         space.add(body, shape)
         self.body = body
         self.shape = shape
-        self.img = pygame.image.load("assets/img/red-bird3.png")
+        self.img = pygame.image.load("angry_birds/assets/img/red-bird3.png")
         self.rect = self.img.get_rect()
 
     def draw(self):
