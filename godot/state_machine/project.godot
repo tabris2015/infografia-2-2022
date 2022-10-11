@@ -11,6 +11,7 @@ config_version=4
 [application]
 
 config/name="state_machine"
+run/main_scene="res://scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [gui]
@@ -44,6 +45,21 @@ block={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":66,"unicode":0,"echo":false,"script":null)
  ]
 }
+yell={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":89,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="world"
+2d_physics/layer_2="player"
+2d_physics/layer_3="player_hurt"
+2d_physics/layer_4="player_hit"
+2d_physics/layer_5="enemy_hurt"
+2d_physics/layer_6="enemy_hit"
 
 [physics]
 
