@@ -420,6 +420,7 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 hframes = 10
 vframes = 9
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1.49999, 18 )
@@ -465,6 +466,16 @@ position = Vector2( 23, -1 )
 [node name="CollisionShape2D" parent="Position2D/HitBox" index="0"]
 shape = SubResource( 57 )
 disabled = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.4, 0.4 )
+smoothing_enabled = true
+smoothing_speed = 3.0
+drag_margin_left = 0.38
+drag_margin_right = 0.4
+editor_draw_limits = true
+editor_draw_drag_margin = true
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
 
