@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://Player.gd" type="Script" id=3]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 220, 527, 62, 550, 68, 291, 245, 366, 295, 277, 388, 356, 714, 339, 931, 342, 931, 552, 375, 557, 529, 337, 468, 230, 99, 47, 770, 46, 940, 48, 946, 245, 713, 240, 73, 208 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 3, 2, 4, 5 ), PoolIntArray( 6, 7, 8, 9, 5, 10 ), PoolIntArray( 11, 10, 5, 4, 12 ), PoolIntArray( 12, 13, 14, 15, 16, 11 ), PoolIntArray( 17, 12, 4 ) ]
+outlines = [ PoolVector2Array( 99, 47, 770, 46, 940, 48, 946, 245, 713, 240, 468, 230, 529, 337, 714, 339, 931, 342, 931, 552, 375, 557, 388, 356, 245, 366, 220, 527, 62, 550, 68, 291, 295, 277, 73, 208 ) ]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Player" type="Sprite" parent="."]
+position = Vector2( 143, 88 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Pet" type="Sprite" parent="."]
+position = Vector2( 397, 73 )
+texture = ExtResource( 1 )
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation2D"]
+position = Vector2( 11, -2 )
+navpoly = SubResource( 1 )
+
+[node name="Line2D" type="Line2D" parent="."]
