@@ -1,6 +1,6 @@
 extends Sprite
 
-var speed = 100
+export var speed = 80
 var path = PoolVector2Array()
 
 func _process(delta):

@@ -16,10 +16,67 @@ script = ExtResource( 2 )
 position = Vector2( 143, 88 )
 texture = ExtResource( 1 )
 script = ExtResource( 3 )
+speed = 100
 
 [node name="Pet" type="Sprite" parent="."]
 position = Vector2( 397, 73 )
 texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet2" type="Sprite" parent="."]
+position = Vector2( 129, 381 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet3" type="Sprite" parent="."]
+position = Vector2( 353, 263 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet4" type="Sprite" parent="."]
+position = Vector2( 509, 383 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet5" type="Sprite" parent="."]
+position = Vector2( 830, 93 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet6" type="Sprite" parent="."]
+position = Vector2( 451, 518 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet7" type="Sprite" parent="."]
+position = Vector2( 685, 406 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet8" type="Sprite" parent="."]
+position = Vector2( 610, 133 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet9" type="Sprite" parent="."]
+position = Vector2( 245, 211 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
+
+[node name="Pet10" type="Sprite" parent="."]
+position = Vector2( 885, 394 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+speed = 40
 
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
@@ -28,3 +85,8 @@ position = Vector2( 11, -2 )
 navpoly = SubResource( 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
+width = 3.0
+
+[node name="LinePet" type="Line2D" parent="."]
+width = 2.0
+default_color = Color( 1, 0.443137, 0.4, 1 )
