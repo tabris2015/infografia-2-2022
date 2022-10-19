@@ -18,6 +18,8 @@ def convert_opencv_to_pygame(img):
     new_img = pygame.image.frombuffer(img.tostring(), new_shape, "RGB")
     return new_img
 
+def distance(p0, p1):
+    return math.sqrt((p1[0] - p0[0])**2 + (p1[1] - p0[1])**2)
 
 class App:
     def __init__(self, screen_width, screen_height, bg_color=(0, 0, 0)):
@@ -33,11 +35,12 @@ class App:
         self.fps = 30
         self.cap = cv2.VideoCapture(0)
         self.hands = mp_hands.Hands(model_complexity=0)
+        self.dist_threshold = 0.05
 
     def process_frame(self, frame):
         results = self.hands.process(frame)
         if not results.multi_hand_landmarks:
-            return frame
+            return frame, (100, 100)
         out = frame.copy()
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
@@ -48,15 +51,35 @@ class App:
                 mp_drawing_styles.get_default_hand_connections_style()
             )
 
-        return out
+        distances = self.get_thumb_distances(results.multi_hand_landmarks[0])
+        return out, distances
+
+    def get_thumb_distances(self, landmarks):
+        thumb = landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+        index = landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+        middle = landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+        
+        distances = [
+            distance((thumb.x, thumb.y), (index.x, index.y)),
+            distance((thumb.x, thumb.y), (middle.x, middle.y)),
+        ]
+        print(distances)
+        return distances
 
     def update(self, keys):
         # get webcam frame
         ret, frame = self.cap.read()
-        out_img = self.process_frame(frame)
+        out_img, distances = self.process_frame(frame)
+
+        if distances[0] < self.dist_threshold:
+            self.screen.fill((0, 255, 0))
+        elif distances[1] < self.dist_threshold:
+            self.screen.fill((255, 0, 0))
+        else:
+            self.screen.fill((0, 0, 0))
+
         pygame_img = convert_opencv_to_pygame(out_img)
-        self.screen.fill(self.bg_color)
-        self.screen.blit(pygame_img, (0, 0))
+        self.screen.blit(pygame_img, (400, 400))
         pygame.display.flip()
         # para mantener 30 frames por segundo
         self.clock.tick(self.fps)

@@ -3,10 +3,10 @@ import cv2
 
 def iniciar_detectores():
     face_cascade = cv2.CascadeClassifier()
-    face_cascade.load("cascade/haarcascade_frontalface_alt.xml")
+    face_cascade.load("computer_vision/object_detection/cascade/haarcascade_frontalface_alt.xml")
 
     eyes_cascade = cv2.CascadeClassifier()
-    eyes_cascade.load("cascade/haarcascade_eye_tree_eyeglasses.xml")
+    eyes_cascade.load("computer_vision/object_detection/cascade/haarcascade_eye_tree_eyeglasses.xml")
 
     return face_cascade, eyes_cascade
 
@@ -34,8 +34,7 @@ def detectar_rostros(img, face_cascade, eyes_cascade):
     return img2
 
 
-
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 # verificar conexion
 if not cap.isOpened():
