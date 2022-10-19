@@ -35,12 +35,13 @@ class App:
         self.fps = 30
         self.cap = cv2.VideoCapture(0)
         self.hands = mp_hands.Hands(model_complexity=0)
-        self.dist_threshold = 0.05
+        self.dist_threshold = 0.08
+        self.circles = []
 
     def process_frame(self, frame):
         results = self.hands.process(frame)
         if not results.multi_hand_landmarks:
-            return frame, (100, 100)
+            return frame, (100, 100), None
         out = frame.copy()
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
@@ -51,8 +52,8 @@ class App:
                 mp_drawing_styles.get_default_hand_connections_style()
             )
 
-        distances = self.get_thumb_distances(results.multi_hand_landmarks[0])
-        return out, distances
+        distances, fingers = self.get_thumb_distances(results.multi_hand_landmarks[0])
+        return out, distances, fingers
 
     def get_thumb_distances(self, landmarks):
         thumb = landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
@@ -64,21 +65,42 @@ class App:
             distance((thumb.x, thumb.y), (middle.x, middle.y)),
         ]
         print(distances)
-        return distances
+        fingers = {"thumb": thumb, "index": index, "middle": middle}
+        return distances, fingers
 
     def update(self, keys):
         # get webcam frame
         ret, frame = self.cap.read()
-        out_img, distances = self.process_frame(frame)
-
-        if distances[0] < self.dist_threshold:
-            self.screen.fill((0, 255, 0))
-        elif distances[1] < self.dist_threshold:
-            self.screen.fill((255, 0, 0))
-        else:
-            self.screen.fill((0, 0, 0))
+        out_img, distances, fingers = self.process_frame(frame)
 
         pygame_img = convert_opencv_to_pygame(out_img)
+        if fingers:
+            if distances[0] < self.dist_threshold:
+                # indice
+                self.circles.append(
+                    {
+                        "center": (self.width - fingers["index"].x * self.width, fingers["index"].y * self.height),
+                        "radius": 20
+                    }
+                    )
+            else:
+                self.screen.fill((0, 0, 0))
+                pygame.draw.circle(
+                    self.screen, 
+                    (100, 100, 100), 
+                    (self.width - fingers["index"].x * self.width, fingers["index"].y * self.height),
+                    20,
+                    2
+                    )
+
+        for circle in self.circles:
+            pygame.draw.circle(
+                    self.screen, 
+                    (255, 0, 255), 
+                    circle["center"],
+                    circle["radius"]
+                    )
+
         self.screen.blit(pygame_img, (400, 400))
         pygame.display.flip()
         # para mantener 30 frames por segundo
