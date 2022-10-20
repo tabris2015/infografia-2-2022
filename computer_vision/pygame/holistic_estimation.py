@@ -58,13 +58,45 @@ class App:
         print(torso_points)
         return torso_points
 
+    def process_face_landmarks(self, landmarks):
+        eyebrow_right = [
+            landmarks.landmark[70],
+            landmarks.landmark[105],
+            landmarks.landmark[55],
+            landmarks.landmark[52],
+        ]
+        eyebrow_left = [
+            landmarks.landmark[285],
+            landmarks.landmark[296],
+            landmarks.landmark[300],
+        ]
+
+        mouth = [
+            landmarks.landmark[57],
+            landmarks.landmark[0],
+            landmarks.landmark[287],
+            landmarks.landmark[17],
+        ]
+
+        face_points = [
+            [(int(l.x * self.width), int(l.y * self.height))
+            for l in eyebrow_right],
+            [(int(l.x * self.width), int(l.y * self.height))
+            for l in eyebrow_left],
+            [(int(l.x * self.width), int(l.y * self.height))
+            for l in mouth],
+        ]
+
+        return face_points
+
     def process_frame(self, frame):
         results = self.holistic.process(frame)
-        if not results.pose_landmarks:
-            return frame, []
+        if not results.pose_landmarks or not results.face_landmarks:
+            return frame, [], []
         out = frame.copy()
         
         t_points = self.process_pose_landmarks(results.pose_landmarks)
+        face_points = self.process_face_landmarks(results.face_landmarks)
 
         mp_drawing.draw_landmarks(
             out,
@@ -72,19 +104,26 @@ class App:
             mp_holistic.POSE_CONNECTIONS,
             mp_drawing_styles.get_default_pose_landmarks_style(),
         )
-        return out, t_points
+        return out, t_points, face_points
 
     def update(self, keys):
         # get webcam frame
         ret, frame = self.cap.read()
-        out_img, t_points = self.process_frame(frame)
+        out_img, t_points, face_points = self.process_frame(frame)
 
         pygame_img = convert_opencv_to_pygame(out_img)
         
+        self.screen.fill((0, 0, 0))
 
         self.screen.blit(pygame_img, (0, 0))
         if t_points:
             pygame.draw.polygon(self.screen, (0, 255, 255), t_points)
+
+        if face_points:
+            pygame.draw.polygon(self.screen, (0, 255, 255), face_points[0])
+            pygame.draw.polygon(self.screen, (0, 255, 255), face_points[1])
+            pygame.draw.polygon(self.screen, (0, 255, 255), face_points[2])
+            
         pygame.display.flip()
         # para mantener 30 frames por segundo
         self.clock.tick(self.fps)
