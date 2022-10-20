@@ -7,7 +7,7 @@ import pygame
 # configuraciones
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 600
-mp_pose = mp.solutions.pose
+mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
@@ -35,9 +35,11 @@ class App:
         self.clock = pygame.time.Clock()
         self.fps = 30
         self.cap = cv2.VideoCapture(0)
-        self.pose = mp_pose.Pose(model_complexity=2, smooth_landmarks=True)
-        self.dist_threshold = 0.08
-        self.circles = []
+        self.holistic = mp_holistic.Holistic(
+            model_complexity=2,
+            # enable_segmentation=True,
+            refine_face_landmarks=True  
+            )
 
     def process_pose_landmarks(self, landmarks):
         """Extraer puntos de interes de los landmarks en 
@@ -57,7 +59,7 @@ class App:
         return torso_points
 
     def process_frame(self, frame):
-        results = self.pose.process(frame)
+        results = self.holistic.process(frame)
         if not results.pose_landmarks:
             return frame, []
         out = frame.copy()
@@ -67,7 +69,7 @@ class App:
         mp_drawing.draw_landmarks(
             out,
             results.pose_landmarks,
-            mp_pose.POSE_CONNECTIONS,
+            mp_holistic.POSE_CONNECTIONS,
             mp_drawing_styles.get_default_pose_landmarks_style(),
         )
         return out, t_points
