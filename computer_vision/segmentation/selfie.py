@@ -5,7 +5,7 @@ import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_selfie_segmentation = mp.solutions.selfie_segmentation
 
-BG_COLOR = (192, 192, 192)
+BG_COLOR = (0, 255, 255)
 cap = cv2.VideoCapture(0)
 
 with mp_selfie_segmentation.SelfieSegmentation(
